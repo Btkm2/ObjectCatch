@@ -1,5 +1,7 @@
 import Fluent
 import Vapor
+import Foundation
+import FileProvider
 
 struct TodoController: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
@@ -28,4 +30,29 @@ struct TodoController: RouteCollection {
         try await todo.delete(on: req.db)
         return .noContent
     }
+    /*struct FileContent: Content {
+        var file: [File]
+    }
+    //MARK: Solve problem with working directory
+    func uploadUser(_ req: Request) throws -> EventLoopFuture<HTTPStatus> {
+            print("uploadUserImage")
+        let directory = DirectoryConfiguration.detect()
+        let workPath = directory.workingDirectory
+        let name = UUID().uuidString + ".jpg"
+        let imageFolder = "profile/images"
+        let saveURL = URL(fileURLWithPath: workPath).appendingPathComponent(imageFolder, isDirectory: true).appendingPathComponent(name, isDirectory: false)
+
+        let input = try req.content.decode(FileContent.self)
+        return input.file.map { payload in
+//                do {
+            try payload.data.write(to: saveURL)
+                    try payload.data.write(to: saveURL)
+                    print("payload: \(payload)")
+                   return 0
+//                } catch {
+//                    print("error: \(error)")
+//                    throw Abort(.internalServerError, reason: "Unable to write multipart form data to file. Underlying error \(error)")
+//                }
+        }.flatten(on: req as! EventLoop).transform(to: .ok)
+        }*/
 }

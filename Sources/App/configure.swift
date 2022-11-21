@@ -19,4 +19,12 @@ public func configure(_ app: Application) throws {
 
     // register routes
     try routes(app)
+    
+    //image upload maxSize
+    app.middleware.use(FileMiddleware(publicDirectory: app.directory.workingDirectory))
+    app.routes.defaultMaxBodySize = "100mb"
+    
+    //Session configuration
+    app.middleware.use(app.sessions.middleware)
+    
 }
