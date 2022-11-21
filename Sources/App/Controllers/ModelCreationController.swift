@@ -262,3 +262,5 @@ func runConversion(){
         fatalError("Requires minimum macOS 12.0!")
     }
 }
+
+//Add comments so i guess i can commit it to github

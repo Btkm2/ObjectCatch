@@ -28,3 +28,4 @@ public func configure(_ app: Application) throws {
     app.middleware.use(app.sessions.middleware)
     
 }
+//Add comments so i guess i can commit it to github
