@@ -24,6 +24,7 @@ func routes(_ app: Application) throws {
         let name = UUID().uuidString + ".jpg"
         let imageFolder = "/Users/bkt/UploadedImages/"
         let test_url = req.application.directory.publicDirectory + "uploads/"
+        //add folder creation method so every upload will be saved into it's own new folder/directory
         let saveURL = URL(fileURLWithPath: workPath).appendingPathComponent(imageFolder, isDirectory: true).appendingPathComponent(name, isDirectory: false)
 
         let input = try req.content.decode(FileContent.self)
