@@ -18,18 +18,25 @@ func routes(_ app: Application) throws {
     app.post("upload") { req -> EventLoopFuture<Response> in
         struct FileContent: Content {
             var files: [File]
+//            var name: String
         }
         let directory = DirectoryConfiguration.detect()
         let workPath = directory.workingDirectory
-        let name = UUID().uuidString + ".jpg"
+        let name = UUID().uuidString + ".zip"
         let imageFolder = "/Users/bkt/UploadedImages/"
         let test_url = req.application.directory.publicDirectory + "uploads/"
         //add folder creation method so every upload will be saved into it's own new folder/directory
         let saveURL = URL(fileURLWithPath: workPath).appendingPathComponent(imageFolder, isDirectory: true).appendingPathComponent(name, isDirectory: false)
 
+        DispatchQueue.main.async {
+            runConversion(name: name)
+        }
+//        DispatchQoS(qosClass: ., relativePriority: <#T##Int#>)
         let input = try req.content.decode(FileContent.self)
+//        input.name
+//        input.files.filename
         return input.files.map { payload in
-            return req.fileio.writeFile(payload.data, at: imageFolder + name).map{}
+            return req.fileio.writeFile(payload.data, at: imageFolder + payload.filename).map{}
         /*return req.application.fileio.openFile(path: saveURL.path,mode: .write,flags: .allowFileCreation(posixMode: 0x744),eventLoop: req.eventLoop)
                 .flatMap { handle in
                     req.application.fileio.write(fileHandle: handle,buffer: payload.data,eventLoop: req.eventLoop)

@@ -11,8 +11,8 @@ import os
 import RealityKit
 import Metal
 
-private let logger = Logger(subsystem: "com.apple.sample.photogrammetry",
-                            category: "HelloPhotogrammetry")
+private let logger = Logger(subsystem: Bundle.main.bundleIdentifier!,
+                            category: "ModelCreationController")
 
 
 /// Checks to make sure at least one GPU meets the minimum requirements for object reconstruction. At
@@ -255,9 +255,17 @@ extension PhotogrammetrySession.Configuration.FeatureSensitivity {
 // MARK: - Main
 
 // Run the program until completion.
-func runConversion(){
+func runConversion(name: String){
+//input_folder:String, output_folder:String
+//    var forlder_input = input_folder
+//    var folder_output = output_folder
     if #available(macOS 12.0, *) {
-        HelloPhotogrammetry.main()
+        logger.log("its started")
+        HelloPhotogrammetry.main(["/Users/bkt/UploadedImages/\(name)"
+                                    ,"/Users/bkt/ProcessedModels/NewModel.usdz",
+                                    "-d","medium",
+                                    "-o","unordered",
+                                    "-f","high"])
     } else {
         fatalError("Requires minimum macOS 12.0!")
     }
