@@ -11,8 +11,7 @@ import os
 import RealityKit
 import Metal
 
-private let logger = Logger(subsystem: Bundle.main.bundleIdentifier!,
-                            category: "ModelCreationController")
+private let logger = Logger()
 
 
 /// Checks to make sure at least one GPU meets the minimum requirements for object reconstruction. At
@@ -109,7 +108,8 @@ struct HelloPhotogrammetry: ParsableCommand {
                     switch output {
                         case .processingComplete:
                             logger.log("Processing is complete!")
-                            Foundation.exit(0)
+                            Foundation.exit(0) //Exits when finishes
+//                        routes(Application)
                         case .requestError(let request, let error):
                             logger.error("Request \(String(describing: request)) had an error: \(String(describing: error))")
                         case .requestComplete(let request, let result):

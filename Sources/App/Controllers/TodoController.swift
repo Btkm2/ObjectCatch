@@ -30,6 +30,14 @@ struct TodoController: RouteCollection {
         try await todo.delete(on: req.db)
         return .noContent
     }
+    
+    func downloadFile(_ req: Request) throws -> Response {
+        guard let url = try URL(string: "/Users/bkt/ProcessedModels/Rock36Images.usdz") else {
+            return Response(status: .noContent)
+        }
+        return req.fileio.streamFile(at: url.path)
+    }
+    
     /*struct FileContent: Content {
         var file: [File]
     }
