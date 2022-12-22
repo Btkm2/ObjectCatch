@@ -131,7 +131,7 @@ func getFileName(filename: String) -> String{
     }
     if !fileManager.fileExists(atPath: "/Users/bkt/UploadedImages/\(filename)") {
         DispatchQueue.global(qos: .userInitiated).async {
-            runConversion(filename: newFileName)
+            //runConversion(filename: newFileName)
         }
         print("Success!")
         print("FileName: \(filename)")
