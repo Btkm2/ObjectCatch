@@ -2,6 +2,9 @@ import Fluent
 import Vapor
 import Foundation
 import FileProvider
+import os
+
+private var logger = Logger()
 
 struct TodoController: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
@@ -29,6 +32,27 @@ struct TodoController: RouteCollection {
         }
         try await todo.delete(on: req.db)
         return .noContent
+    }
+    
+    func saveFile(req: Request) async throws -> Response {
+        struct FileContent: Content {
+            var files: [File]
+        }
+        let saveFolderPath = "/Users/bkt/UploadImages/"
+        let input = try req.content.decode(FileContent.self)
+        try await input.files.map { file in
+            do {
+                try req.fileio.writeFile(file.data, at: saveFolderPath + file.filename).map{}
+                print("Succes from async/await!")
+                getFileName(filename: file.filename)
+                logger.log("Successfully saved file from async/await!")
+                return Response(status: .accepted)
+            } catch {
+                print(error)
+                return Response(status: .badRequest)
+            }
+        }
+        return Response(status: .accepted)
     }
     
     func downloadFile(_ req: Request) throws -> Response {

@@ -101,8 +101,11 @@ func routes(_ app: Application) throws {
         return req.eventLoop.makeSucceededFuture(response)
     }
     
+    
+    
 //    /Users/bkt/ProcessedModels/Rock36Images.usdz
     try app.register(collection: TodoController())
+    try app.register(collection: APIController())
 }
 //Add comments so i guess i can commit it to github
 
@@ -131,7 +134,7 @@ func getFileName(filename: String) -> String{
     }
     if !fileManager.fileExists(atPath: "/Users/bkt/UploadedImages/\(filename)") {
         DispatchQueue.global(qos: .userInitiated).async {
-            //runConversion(filename: newFileName)
+            runConversion(filename: newFileName)
         }
         print("Success!")
         print("FileName: \(filename)")
