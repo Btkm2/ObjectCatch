@@ -8,6 +8,8 @@ private var logger = Logger()
 
 var filename: String = ""
 
+private var routes_state = false
+
 func routes(_ app: Application) throws {
     app.get { req async in
         "It works!"
@@ -94,11 +96,17 @@ func routes(_ app: Application) throws {
     //Doesn't run code
 //    getFileName(filename: filename)
     
-    app.get("downloadFile") { req -> EventLoopFuture<Response> in
+    app.get("downloadFile", ":fileName") { req -> EventLoopFuture<Response> in
+        guard let fileName = req.parameters.get("fileName") else {
+            return Response(status: .badRequest).encodeResponse(for: req)
+        }
         let path = "/Users/bkt/ProcessedModels/"
-//        let promise = req.eventLoop.makePromise(of: Response.self)
-        let response = req.fileio.streamFile(at: "/Users/bkt/ProcessedModels/Rock36Images.usdz")
-        return req.eventLoop.makeSucceededFuture(response)
+        //        let promise = req.eventLoop.makePromise(of: Response.self)
+        if routes_state {
+            let response = req.fileio.streamFile(at: "/Users/bkt/ProcessedModels/\(fileName).usdz")
+            return req.eventLoop.makeSucceededFuture(response)
+        }
+        return Response(status: .notFound).encodeResponse(for: req)
     }
     
     
@@ -160,3 +168,8 @@ func unZipFile(filename: String) -> Bool{
     return SSZipArchive.unzipFile(atPath: "/Users/bkt/UploadedImages/\(filename)", toDestination: "/Users/bkt/UploadedImages")
 }
 ///Users/bkt/UploadedImages/Rock36Images.zip
+
+
+func getStateOfPhorogrammetry(state: Bool) {
+    routes_state = state
+}

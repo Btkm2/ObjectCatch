@@ -13,6 +13,8 @@ import Metal
 
 private let logger = Logger()
 
+private var state = false
+
 
 /// Checks to make sure at least one GPU meets the minimum requirements for object reconstruction. At
 /// least one GPU must be a "high power" device, which means it has at least 4 GB of RAM, provides
@@ -108,7 +110,9 @@ struct HelloPhotogrammetry: ParsableCommand {
                     switch output {
                         case .processingComplete:
                             logger.log("Processing is complete!")
-                            Foundation.exit(0) //Exits when finishes
+                            state = true
+                            getStateOfPhorogrammetry(state: state)
+//                            Foundation.exit(0) //Exits when finishes
 //                        routes(Application)
                         case .requestError(let request, let error):
                             logger.error("Request \(String(describing: request)) had an error: \(String(describing: error))")
@@ -272,3 +276,11 @@ func runConversion(name: String){
 }
 
 //Add comments so i guess i can commit it to github
+
+
+/*
+ 2022-12-29 18:30:26.652173+0600 Run[35317:722105] Request complete: modelFile(url: file:///Users/bkt/ProcessedModels/Test.usdz, detail: RealityFoundation.PhotogrammetrySession.Request.Detail.medium, geometry: nil) with result...
+ 2022-12-29 18:30:26.652211+0600 Run[35317:722105]     modelFile available at url=file:///Users/bkt/ProcessedModels/Test.usdz
+ 2022-12-29 18:30:26.652236+0600 Run[35317:722105] Processing is complete!
+ [ INFO ] GET /downloadFile/Test [request-id: 445AD48A-613C-4BF7-8376-0AAE61865B56]
+*/
